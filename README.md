@@ -1,4 +1,4 @@
-# promstack
+# prometheus
 A high-availability prometheus stack for Docker Swarm
 
 ## Getting Started
