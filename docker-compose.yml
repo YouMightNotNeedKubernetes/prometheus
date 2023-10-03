@@ -26,7 +26,7 @@ x-default-logging: &x-default-logging
 configs:
   prometheus.yml:
     template_driver: golang
-    name: prometheus-v1.1.yml
+    name: prometheus-v1.0.yml
     file: configs/prometheus.yml
 
   # Rules
