@@ -12,7 +12,7 @@ $ docker network create --driver overlay --attachable dockerswarm_monitoring
 We provided a base configuration file for Prometheus. You can find it in the `config` folder.  
 Please make a copy as `configs/prometheus.yml`, make sure to change the following values:
 
-```yml
+```yaml
 # configs/prometheus.yml
 global:
   external_labels:
