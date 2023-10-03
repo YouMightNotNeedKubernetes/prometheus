@@ -1,6 +1,5 @@
 docker_stack_name = prometheus
 
-
 it:
 	@echo "make [configs|deploy|destroy]"
 
