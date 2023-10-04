@@ -26,10 +26,11 @@ alerting:
     # Remote alertmanager
     # - url: http://alertmanager:9093
 
+    # !!! It is recommended to leave this config block below untouched !!!
     # Local cluster alertmanager with DNS discovery
     - dns_sd_configs:
         - names:
-          - 'tasks.alertmanagers'
+          - 'tasks.alertmanager'
           type: 'A'
           port: 9093
 

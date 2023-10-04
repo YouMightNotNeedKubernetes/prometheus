@@ -29,9 +29,6 @@ alerting:
   alertmanagers:
     # Remote alertmanager
     # - url: http://alertmanager:9093
-
-    # You can leave the "Local cluster alertmanager with DNS discovery" untouched
-    # Local cluster alertmanager with DNS discovery
 ```
 
 And add any additional configuration you need to `configs/prometheus.yml`.
