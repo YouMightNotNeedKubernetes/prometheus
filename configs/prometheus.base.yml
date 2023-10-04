@@ -11,15 +11,10 @@ global:
       __replica__: replica-{{ env "TASK_SLOT"}}
 
 # Write samples to Grafana Mimir
-remote_write:
-  - url: http://mimir:3200/api/v1/push
-    headers:
-      "X-Scope-OrgID": demo
-
-# Load and evaluate rules in this file every 'evaluation_interval' seconds.
-rule_files:
-  - "swarm_node.rules.yml"
-  - "swarm_task.rules.yml"
+# remote_write:
+#   - url: http://mimir:3200/api/v1/push
+#     headers:
+#       "X-Scope-OrgID": demo
 
 alerting:
   alertmanagers:
@@ -33,6 +28,11 @@ alerting:
           - 'tasks.alertmanager'
           type: 'A'
           port: 9093
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "swarm_node.rules.yml"
+  - "swarm_task.rules.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 scrape_configs:
