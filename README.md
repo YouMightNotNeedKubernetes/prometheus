@@ -55,6 +55,15 @@ services:
         io.prometheus.metrics_path: "/metrics" # optional
 ```
 
+## High Availability
+
+This stack is designed to be highly available.
+
+You MUST enable `remote_write` in the `configs/prometheus.yml` file to make it work.
+
+By default, it will deploy 2 replicas of Prometheus. Having more than 2 replicas is way too much for a small cluster.  
+If you want to change the number of replicas, you can do so by changing the `replicas` value in the `docker-compose.yml` file.
+
 ## Deployment
 
 To deploy the stack, run the following command:
