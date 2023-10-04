@@ -23,15 +23,19 @@ rule_files:
 
 alerting:
   alertmanagers:
-  - dns_sd_configs:
-      - names:
-        - 'tasks.alertmanagers'
-        type: 'A'
-        port: 9093
+    # Remote alertmanager
+    # - url: http://alertmanager:9093
+
+    # Local cluster alertmanager with DNS discovery
+    - dns_sd_configs:
+        - names:
+          - 'tasks.alertmanagers'
+          type: 'A'
+          port: 9093
 
 # A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
 scrape_configs:
+  # Here it's Prometheus itself.
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
