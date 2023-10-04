@@ -61,6 +61,8 @@ This stack is designed to be highly available.
 
 You MUST enable `remote_write` in the `configs/prometheus.yml` file to make it work.
 
+![High Availability](https://github.com/YouMightNotNeedKubernetes/prometheus/assets/4363857/3a3e407e-d95a-4cad-afe6-f0259803943d)
+
 By default, it will deploy 2 replicas of Prometheus. Having more than 2 replicas is way too much for a small cluster.  
 If you want to change the number of replicas, you can do so by changing the `replicas` value in the `docker-compose.yml` file.
 
