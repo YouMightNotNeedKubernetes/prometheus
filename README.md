@@ -48,3 +48,26 @@ To destroy the stack, run the following command:
 ```sh
 $ make destroy
 ```
+
+## How it works
+
+This setup uses Docker Metrics API to collect metrics from the Docker daemon.
+> See https://docs.docker.com/config/daemon/prometheus/ for more information.
+
+**Adding a new service to monitor**
+```yaml
+# docker-compose.yml
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    # ...
+    networks:
+      - dockerswarm_monitoring
+    deploy: 
+      <<: *x-deploy-policy
+      labels:
+        io.prometheus.job: "cadvisor"
+        io.prometheus.port: "8080" # optional
+        io.prometheus.scheme: "http" # optional
+        io.prometheus.metrics_path: "/metrics" # optional
+```

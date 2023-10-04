@@ -88,8 +88,8 @@ scrape_configs:
         replacement: $1:$2
         target_label: __address__
       # Relabel to customize metric path based on endpoints
-      # based on endpoints "io.prometheus.path = <metric-path>" label.
-      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_path]
+      # based on endpoints "io.prometheus.metrics_path = <metrics_path>" label.
+      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_metrics_path]
         action: replace
         target_label: __metrics_path__
         regex: (.+)
