@@ -40,8 +40,9 @@ alerting:
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
-  - "swarm_node.rules.yml"
-  - "swarm_task.rules.yml"
+  - "node.rules.yml"
+  - "service.rules.yml"
+  - "task.rules.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 scrape_configs:

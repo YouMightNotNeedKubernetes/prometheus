@@ -30,10 +30,12 @@ configs:
     file: configs/prometheus.yml
 
   # Rules
-  prometheus-swarm-node-rules:
-    file: rules/swarm_node.rules.yml
-  prometheus-swarm-task-rules:
-    file: rules/swarm_task.rules.yml
+  node.rules.yml:
+    file: rules/node.rules.yml
+  service.rules.yml:
+    file: rules/service.rules.yml
+  task.rules.yml:
+    file: rules/task.rules.yml
 
 services:
   prometheus:
@@ -60,10 +62,12 @@ services:
         target: /etc/prometheus/prometheus.yml
 
       # Rules
-      - source: prometheus-swarm-node-rules
-        target: /etc/prometheus/swarm_node.rules.yml
-      - source: prometheus-swarm-task-rules
-        target: /etc/prometheus/swarm_task.rules.yml
+      - source: node.rules.yml
+        target: /etc/prometheus/node.rules.yml
+      - source: service.rules.yml
+        target: /etc/prometheus/service.rules.yml
+      - source: task.rules.yml
+        target: /etc/prometheus/task.rules.yml
     deploy: *x-deploy-policy
     logging: *x-default-logging
 
