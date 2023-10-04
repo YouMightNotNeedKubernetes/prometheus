@@ -63,8 +63,7 @@ services:
     # ...
     networks:
       - dockerswarm_monitoring
-    deploy: 
-      <<: *x-deploy-policy
+    deploy:
       labels:
         io.prometheus.job: "cadvisor"
         io.prometheus.port: "8080" # optional
