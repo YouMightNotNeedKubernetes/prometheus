@@ -28,7 +28,7 @@ remote_write:
 alerting:
   alertmanagers:
     # Remote alertmanager
-    # - url: http://alertmanager:9093
+    - url: http://alertmanager:9093
 ```
 
 And add any additional configuration you need to `configs/prometheus.yml`.
