@@ -33,22 +33,6 @@ alerting:
 
 And add any additional configuration you need to `configs/prometheus.yml`.
 
-## Deployment
-
-To deploy the stack, run the following command:
-
-```sh
-$ make deploy
-```
-
-## Destroy
-
-To destroy the stack, run the following command:
-
-```sh
-$ make destroy
-```
-
 ## How it works
 
 This setup uses Docker Metrics API to collect metrics from the Docker daemon.
@@ -69,4 +53,20 @@ services:
         io.prometheus.port: "8080" # optional
         io.prometheus.scheme: "http" # optional
         io.prometheus.metrics_path: "/metrics" # optional
+```
+
+## Deployment
+
+To deploy the stack, run the following command:
+
+```sh
+$ make deploy
+```
+
+## Destroy
+
+To destroy the stack, run the following command:
+
+```sh
+$ make destroy
 ```
