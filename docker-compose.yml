@@ -27,18 +27,28 @@ x-default-logging: &x-default-logging
   driver: json-file
 
 configs:
-  prometheus.yml:
-    template_driver: golang
-    name: prometheus-v1.0.yml
+  prometheus-config:
+    name: prometheus-config-v1
     file: configs/prometheus.yml
 
+  # Scrape configs
+  scrape-configs-docker:
+    name: prometheus-scrape-configs-docker-v1
+    file: configs/scrape_configs/docker.yml
+  scrape-configs-dockerswarm:
+    name: prometheus-scrape-configs-dockerswarm-v1
+    file: configs/scrape_configs/dockerswarm.yml
+
   # Rules
-  node.rules.yml:
-    file: rules/node.rules.yml
-  service.rules.yml:
-    file: rules/service.rules.yml
-  task.rules.yml:
-    file: rules/task.rules.yml
+  alerting-rules-node:
+    name: prometheus-alerting-rules-node-v1
+    file: configs/rules/node.yml
+  alerting-rules-service:
+    name: prometheus-alerting-rules-service-v1
+    file: configs/rules/service.yml
+  alerting-rules-task:
+    name: prometheus-alerting-rules-task-v1
+    file: configs/rules/task.yml
 
 services:
   prometheus:
@@ -61,16 +71,22 @@ services:
       - prometheus:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock:ro
     configs:
-      - source: prometheus.yml
+      - source: prometheus-config
         target: /etc/prometheus/prometheus.yml
 
+      # Scrape configs
+      - source: scrape-configs-docker
+        target: /etc/prometheus/scrape_configs/docker.yml
+      - source: scrape-configs-dockerswarm
+        target: /etc/prometheus/scrape_configs/dockerswarm.yml
+
       # Rules
-      - source: node.rules.yml
-        target: /etc/prometheus/node.rules.yml
-      - source: service.rules.yml
-        target: /etc/prometheus/service.rules.yml
-      - source: task.rules.yml
-        target: /etc/prometheus/task.rules.yml
+      - source: alerting-rules-node
+        target: /etc/prometheus/rules/node.yml
+      - source: alerting-rules-service
+        target: /etc/prometheus/rules/service.yml
+      - source: alerting-rules-task
+        target: /etc/prometheus/rules/task.yml
     deploy: *x-deploy-policy
     logging: *x-default-logging
 

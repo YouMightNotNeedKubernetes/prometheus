@@ -40,9 +40,15 @@ alerting:
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
-  - "node.rules.yml"
-  - "service.rules.yml"
-  - "task.rules.yml"
+  - "rules/node.yml"
+  - "rules/service.yml"
+  - "rules/task.yml"
+
+# Scrape config files specifies a list of globs. Scrape configs are read from
+# all matching files and appended to the list of scrape configs.
+scrape_config_files:
+  - "scrape_configs/docker.yml"
+  - "scrape_configs/dockerswarm.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 scrape_configs:
@@ -50,72 +56,3 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
-
-  # Create a job for Docker daemons.
-  - job_name: 'docker'
-    dockerswarm_sd_configs:
-      - host: unix:///var/run/docker.sock
-        role: nodes
-    relabel_configs:
-      # Fetch metrics on port 9323.
-      - source_labels: [__meta_dockerswarm_node_address]
-        target_label: __address__
-        replacement: $1:9323
-      # Set hostname as instance label
-      - source_labels: [__meta_dockerswarm_node_hostname]
-        target_label: instance
-
-  # Create a job for Docker Swarm containers.
-  - job_name: 'dockerswarm'
-    dockerswarm_sd_configs:
-      - host: unix:///var/run/docker.sock
-        role: tasks
-    relabel_configs:
-       # Re-map instance from using Docker network IP to using Swarm node hostname.
-      - source_labels: [__meta_dockerswarm_node_hostname]
-        target_label: instance
-
-      # Filtering rules for containers.
-      # Only keep containers that should be running.
-      - source_labels: [__meta_dockerswarm_task_desired_state]
-        regex: running
-        action: keep
-      # Only keep containers that have `dockerswarm_monitoring` network attatched.
-      - source_labels: [__meta_dockerswarm_network_name]
-        regex: dockerswarm_monitoring
-        action: keep
-      # Only keep containers that have a `io.prometheus.job` label.
-      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_job]
-        regex: .+
-        action: keep
-
-      # Overriding scrape config for containers.
-      # Relabel to scrape only single, desired port for the service based
-      # based on endpoints "io.prometheus.port = <port>" label.
-      - source_labels: [__address__, __meta_dockerswarm_service_label_io_prometheus_port]
-        action: replace
-        regex: ([^:]+)(?::\d+)?;(\d+)
-        replacement: $1:$2
-        target_label: __address__
-      # Relabel to customize metric path based on endpoints
-      # based on endpoints "io.prometheus.metrics_path = <metrics_path>" label.
-      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_metrics_path]
-        action: replace
-        target_label: __metrics_path__
-        regex: (.+)
-      # Relabel to configure scrape scheme for all service scrape targets
-      # based on endpoints "io.prometheus.scheme = <scheme>" label.
-      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_scheme]
-        action: replace
-        target_label: __scheme__
-        regex: (https?)
-
-      # Relabeling rules for containers.
-      # Use the "io.prometheus.job" Swarm label as Prometheus job label.
-      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_job]
-        action: replace
-        target_label: job
-      # Use the "com.docker.stack.namespace" service label as Prometheus "namespace" label.
-      - source_labels: [__meta_dockerswarm_service_label_com_docker_stack_namespace]
-        action: replace
-        target_label: namespace
