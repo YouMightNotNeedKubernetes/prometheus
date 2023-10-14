@@ -61,10 +61,38 @@ This stack is designed to be highly available.
 
 You MUST enable `remote_write` in the `configs/prometheus.yml` file to make it work.
 
-![High Availability](https://github.com/YouMightNotNeedKubernetes/prometheus/assets/4363857/3a3e407e-d95a-4cad-afe6-f0259803943d)
-
 By default, it will deploy 2 replicas of Prometheus. Having more than 2 replicas is way too much for a small cluster.  
 If you want to change the number of replicas, you can do so by changing the `replicas` value in the `docker-compose.yml` file.
+
+![High Availability](https://github.com/YouMightNotNeedKubernetes/prometheus/assets/4363857/3a3e407e-d95a-4cad-afe6-f0259803943d)
+
+### Server placement
+
+A `node.labels.prometheus` label is used to determine which nodes the service can be deployed on.
+
+The deployment uses both placement **constraints** & **preferences** to ensure that the servers are spread evenly across the Docker Swarm manager nodes and only **ALLOW** one replica per node.
+
+![placement_prefs](https://docs.docker.com/engine/swarm/images/placement_prefs.png)
+
+> See https://docs.docker.com/engine/swarm/services/#control-service-placement for more information.
+
+#### List the nodes
+On the manager node, run the following command to list the nodes in the cluster.
+
+```sh
+docker node ls
+```
+
+#### Add the label to the node
+On the manager node, run the following command to add the label to the node.
+
+Repeat this step for each node you want to deploy the service to. Make sure that the number of node updated matches the number of replicas you want to deploy.
+
+**Example deploy service with 2 replicas**:
+```sh
+docker node update --label-add prometheus=true <node-1>
+docker node update --label-add prometheus=true <node-2>
+```
 
 ## Deployment
 
