@@ -4,6 +4,7 @@ x-deploy-policy: &x-deploy-policy
     max_replicas_per_node: 1
     constraints:
       - node.role == manager
+      - node.labels.prometheus == true
     preferences:
       - spread: node.labels.prometheus
   update_config:
@@ -92,7 +93,7 @@ services:
 
 volumes:
   prometheus:
-    name: prometheus-{{.Task.Slot}}
+    external: true
 
 networks:
   dockerswarm_monitoring:
