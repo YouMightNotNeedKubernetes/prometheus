@@ -8,7 +8,7 @@ global:
   external_labels:
       cluster: demo
       namespace: demo
-      __replica__: replica-{{ env "TASK_SLOT"}}
+      __replica__: replica-{{.Task.Slot}}
 
 # Write samples to Grafana Mimir
 remote_write:

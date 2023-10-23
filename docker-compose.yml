@@ -29,6 +29,7 @@ x-default-logging: &x-default-logging
 
 configs:
   prometheus-config:
+    template_driver: golang
     name: prometheus-config-v1
     file: configs/prometheus.yml
 
@@ -62,8 +63,6 @@ services:
       - "--storage.tsdb.retention.size=60GB"
       - "--storage.tsdb.retention.time=30d"
       - "--log.level=info"
-    environment:
-      - TASK_SLOT={{.Task.Slot}}
     networks:
       - dockerswarm_monitoring
     ports:
