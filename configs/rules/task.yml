@@ -2,8 +2,14 @@ groups:
   - name: tasks
     rules:
       # CPU usage
-      - alert: task_high_cpu_usage_50
-        expr: sum(rate(container_cpu_usage_seconds_total{name!~"", container_label_com_docker_swarm_task_name!~""}[1m]) * 60 ) by (name, instance) > 50
+      # - alert: task_high_cpu_usage_50
+      #   expr: sum(rate(container_cpu_usage_seconds_total{name!~"", container_label_com_docker_swarm_task_name!~""}[1m]) * 60 ) by (name, instance) > 50
+      #   for: 1m
+      #   annotations:
+      #     description: '{{ $labels.container_label_com_docker_swarm_task_name }} on ''{{ $labels.instance }}'' CPU usage is at {{ humanize $value }}%.'
+      #     summary: CPU alert for task '{{ $labels.container_label_com_docker_swarm_task_name }}' on '{{ $labels.instance }}'
+      - alert: task_high_cpu_usage_70
+        expr: sum(rate(container_cpu_usage_seconds_total{name!~"", container_label_com_docker_swarm_task_name!~""}[1m]) * 60 ) by (name, instance) > 70
         for: 1m
         annotations:
           description: '{{ $labels.container_label_com_docker_swarm_task_name }} on ''{{ $labels.instance }}'' CPU usage is at {{ humanize $value }}%.'
