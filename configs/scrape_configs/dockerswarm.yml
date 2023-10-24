@@ -52,3 +52,8 @@ scrape_configs:
       - source_labels: ['__meta_dockerswarm_service_label_com_docker_stack_namespace', '__meta_dockerswarm_service_label_io_prometheus_job']
         separator: '/'
         target_label: job
+
+      # Label map to add Swarm stack labels as Prometheus labels.
+      - action: labelmap
+        regex: "__meta_dockerswarm_service_label_com_docker_stack_(.*)"
+        replacement: "docker_stack_${1}"
