@@ -18,10 +18,6 @@ scrape_configs:
       - source_labels: [__meta_dockerswarm_service_label_io_prometheus_enable]
         regex: 'true'
         action: keep
-      # Only keep containers that have a `io.prometheus.job` label.
-      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_job]
-        regex: .+
-        action: keep
 
       # Overriding scrape config for containers.
       # Relabel to scrape only single, desired port for the service based
