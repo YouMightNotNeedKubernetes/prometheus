@@ -27,46 +27,49 @@ x-default-logging: &x-default-logging
     max-file: "5"
   driver: json-file
 
+networks:
+  dockerswarm_monitoring:
+    name: dockerswarm_monitoring
+    external: true
+
+volumes:
+  prometheus:
+    external: true
+
 configs:
   prometheus-config:
     template_driver: golang
-    name: prometheus-config-v1
     file: configs/prometheus.yml
 
   # Scrape configs
   scrape-configs-docker:
-    name: prometheus-scrape-configs-docker-v1
     file: configs/scrape_configs/docker.yml
   scrape-configs-dockerswarm:
-    name: prometheus-scrape-configs-dockerswarm-v1
     file: configs/scrape_configs/dockerswarm.yml
 
   # Rules
   alerting-rules-node:
-    name: prometheus-alerting-rules-node-v1
     file: configs/rules/node.yml
   alerting-rules-service:
-    name: prometheus-alerting-rules-service-v1
     file: configs/rules/service.yml
   alerting-rules-task:
-    name: prometheus-alerting-rules-task-v1
     file: configs/rules/task.yml
 
 services:
   prometheus:
-    image: prom/prometheus:latest
-    hostname: prometheus-{{.Task.Slot}}-{{.Task.ID}}
+    image: prom/prometheus:${PROMETHEUS_VERSION:-latest}
+    hostname: prometheus-{{.Task.Slot}}
     user: root
     command:
+      - "--log.level=info"
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.size=60GB"
       - "--storage.tsdb.retention.time=30d"
-      - "--log.level=info"
     networks:
       - dockerswarm_monitoring
     ports:
-      - 9090:9090
+      - ${PROMETHEUS_PORT:-9090}:9090
     volumes:
       - prometheus:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -89,12 +92,3 @@ services:
         target: /etc/prometheus/rules/task.yml
     deploy: *x-deploy-policy
     logging: *x-default-logging
-
-volumes:
-  prometheus:
-    external: true
-
-networks:
-  dockerswarm_monitoring:
-    name: dockerswarm_monitoring
-    external: true
