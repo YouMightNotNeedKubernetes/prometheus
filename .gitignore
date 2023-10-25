@@ -1,2 +1,3 @@
 configs/alertmanager.yml
 configs/prometheus.yml
+docker-compose.*.yml

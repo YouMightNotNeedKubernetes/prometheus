@@ -9,6 +9,7 @@ scrape_configs:
       - source_labels: [__meta_dockerswarm_node_address]
         target_label: __address__
         replacement: $1:9323
+
       # Set hostname as instance label
       - source_labels: [__meta_dockerswarm_node_hostname]
         target_label: instance
