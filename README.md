@@ -16,6 +16,13 @@ You might need to create swarm-scoped overlay network called `dockerswarm_monito
 $ docker network create --scope swarm --driver overlay --attachable dockerswarm_monitoring
 ```
 
+You also need to create extra networks for prometheus agents (such as cAdvisor, Node Exporter... etc.) and external resource (aka. your application).
+
+```sh
+$ docker network create --scope swarm --driver overlay --attachable prometheus # for external resource
+$ docker network create --scope swarm --driver overlay --attachable prometheus_agents
+```
+
 We provided a base configuration file for Prometheus. You can find it in the `config` folder.  
 Please make a copy as `configs/prometheus.yml`, make sure to change the following values:
 
@@ -53,9 +60,10 @@ services:
     image: gcr.io/cadvisor/cadvisor:latest
     # ...
     networks:
-      - dockerswarm_monitoring
+      - prometheus_agents
     deploy:
       labels:
+        io.prometheus.enable: "true"
         io.prometheus.job: "cadvisor"
         io.prometheus.port: "8080" # optional
         io.prometheus.scheme: "http" # optional

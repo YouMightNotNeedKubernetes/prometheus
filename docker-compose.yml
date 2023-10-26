@@ -28,6 +28,12 @@ x-default-logging: &x-default-logging
   driver: json-file
 
 networks:
+  prometheus:
+    name: prometheus
+    external: true
+  prometheus_agents:
+    name: prometheus_agents
+    external: true
   dockerswarm_monitoring:
     name: dockerswarm_monitoring
     external: true
@@ -67,6 +73,8 @@ services:
       - "--storage.tsdb.retention.size=60GB"
       - "--storage.tsdb.retention.time=30d"
     networks:
+      - prometheus
+      - prometheus_agents
       - dockerswarm_monitoring
     ports:
       - ${PROMETHEUS_PORT:-9090}:9090
