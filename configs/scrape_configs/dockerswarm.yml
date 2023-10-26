@@ -50,9 +50,6 @@ scrape_configs:
         action: replace
         target_label: namespace
       # Use the "io.prometheus.job" Swarm label as Prometheus job label.
-      # - source_labels: [__meta_dockerswarm_service_label_io_prometheus_job]
-      #   action: replace
-      #   target_label: job
       - source_labels: ['__meta_dockerswarm_service_label_com_docker_stack_namespace', '__meta_dockerswarm_service_label_io_prometheus_job']
         separator: '/'
         target_label: job
