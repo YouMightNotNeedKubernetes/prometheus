@@ -25,8 +25,8 @@ scrape_configs:
 
       # Overriding scrape config for containers.
       # Relabel to scrape only single, desired port for the service based
-      # based on endpoints "io.prometheus.port = <port>" label.
-      - source_labels: [__address__, __meta_dockerswarm_service_label_io_prometheus_port]
+      # based on endpoints "io.prometheus.scrape_port = <port>" label.
+      - source_labels: [__address__, __meta_dockerswarm_service_label_io_prometheus_scrape_port]
         action: replace
         regex: ([^:]+)(?::\d+)?;(\d+)
         replacement: $1:$2
@@ -38,8 +38,8 @@ scrape_configs:
         target_label: __metrics_path__
         regex: (.+)
       # Relabel to configure scrape scheme for all service scrape targets
-      # based on endpoints "io.prometheus.scheme = <scheme>" label.
-      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_scheme]
+      # based on endpoints "io.prometheus.scrape_scheme = <scheme>" label.
+      - source_labels: [__meta_dockerswarm_service_label_io_prometheus_scrape_scheme]
         action: replace
         target_label: __scheme__
         regex: (https?)
