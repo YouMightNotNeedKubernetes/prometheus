@@ -64,7 +64,6 @@ services:
     deploy:
       labels:
         io.prometheus.enable: "true"
-        io.prometheus.job: "cadvisor"
         io.prometheus.scrape_port: "8080" # optional
         io.prometheus.scrape_scheme: "http" # optional
         io.prometheus.metrics_path: "/metrics" # optional
