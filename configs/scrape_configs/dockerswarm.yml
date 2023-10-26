@@ -69,7 +69,7 @@ scrape_configs:
       # !!! IMPORTANT !!!
       # Extratanous labels for overriding the prometheus scrape configs
       # Use with caution as these will override any labels set by the relabeling rules above.
-      # Use the task labels that are prefixed by `prometheus-`.
+      # Use the task labels that are prefixed by `io.prometheus.configs.<key> = <value>`.
       - regex: __meta_dockerswarm_service_label_io_prometheus_configs_(.+)
         action: labelmap
         replacement: $1
