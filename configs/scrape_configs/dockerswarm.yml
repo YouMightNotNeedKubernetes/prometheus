@@ -31,6 +31,7 @@ scrape_configs:
         regex: ([^:]+)(?::\d+)?;(\d+)
         replacement: $1:$2
         target_label: __address__
+
       # Relabel to customize metric path based on endpoints
       # based on endpoints "io.prometheus.metrics_path = <metrics_path>" label.
       - source_labels: [__meta_dockerswarm_service_label_io_prometheus_metrics_path]
@@ -49,8 +50,14 @@ scrape_configs:
       - source_labels: [__meta_dockerswarm_service_label_com_docker_stack_namespace]
         action: replace
         target_label: namespace
-      # Use the "io.prometheus.job" Swarm label as Prometheus job label.
-      - source_labels: ['__meta_dockerswarm_service_label_com_docker_stack_namespace', '__meta_dockerswarm_service_label_io_prometheus_job']
+      # Use the "com.docker.swarm.service.name" service label as Prometheus "service" label.
+      - source_labels: [__meta_dockerswarm_service_name]
+        action: replace
+        regex: "^.+_(.+)$"
+        replacement: "${1}"
+        target_label: service
+      # Use the "io.prometheus.job_name" Swarm label as Prometheus job label.
+      - source_labels: ['__meta_dockerswarm_service_label_com_docker_stack_namespace', 'service']
         separator: '/'
         target_label: job
 
@@ -58,3 +65,11 @@ scrape_configs:
       - action: labelmap
         regex: "__meta_dockerswarm_service_label_com_docker_stack_(.*)"
         replacement: "docker_stack_${1}"
+
+      # !!! IMPORTANT !!!
+      # Extratanous labels for overriding the prometheus scrape configs
+      # Use with caution as these will override any labels set by the relabeling rules above.
+      # Use the task labels that are prefixed by `prometheus-`.
+      - regex: __meta_dockerswarm_service_label_io_prometheus_(.+)
+        action: labelmap
+        replacement: $1
