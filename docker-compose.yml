@@ -32,8 +32,8 @@ networks:
     name: dockerswarm_monitoring
     external: true
   prometheus:
-    driver: overlay
-    attachable: true
+    name: prometheus
+    external: true
 
 volumes:
   prometheus:

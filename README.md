@@ -16,6 +16,12 @@ You might need to create swarm-scoped overlay network called `dockerswarm_monito
 $ docker network create --scope swarm --driver overlay --attachable dockerswarm_monitoring
 ```
 
+You also need to create extra networks for prometheus agents (such as cAdvisor, Node Exporter... etc.) and external resources (such as Alertmanager, Grafana... etc.) to communicate with Prometheus.
+
+```sh
+$ docker network create --scope swarm --driver overlay --attachable prometheus
+```
+
 We provided a base configuration file for Prometheus. You can find it in the `config` folder.  
 Please make a copy as `configs/prometheus.yml`, make sure to change the following values:
 
