@@ -45,12 +45,6 @@ scrape_configs:
         target_label: __scheme__
         regex: (https?)
 
-      # Relabeling rules for containers.
-      # Label map to add Swarm stack labels as Prometheus labels.
-      - action: labelmap
-        regex: "__meta_dockerswarm_service_label_com_docker_stack_(.*)"
-        replacement: "docker_stack_${1}"
-
       # !!! IMPORTANT !!!
       # Kubernetes compatible relabeling.
       # Use with caution as these will override any labels set by the relabeling rules above.
