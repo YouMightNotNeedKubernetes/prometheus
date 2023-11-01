@@ -1,0 +1,45 @@
+scrape_configs:
+  # Create a job for Docker Swarm containers.
+  - job_name: 'cadvisor'
+    dns_sd_configs:
+      - names:
+        - 'tasks.cadvisor'
+        type: 'A'
+        port: 8080
+    metric_relabel_configs:
+      # Relabeling rules for containers.
+      # Label map to add Swarm stack labels as Prometheus labels.
+      - action: labelmap
+        regex: "container_label_com_docker_(.*)"
+        replacement: "docker_${1}"
+
+      # !!! IMPORTANT !!!
+      # Kubernetes compatible relabeling.
+      # Use with caution as these will override any labels set by the relabeling rules above.
+      # Use the "default" as Kubernetes "namespace" label.
+      - target_label: namespace
+        replacement: default
+
+      # Extract service name
+      - source_labels: [container_label_com_docker_swarm_service_name]
+        action: replace
+        regex: "^.+_(.+)$"
+        replacement: "${1}"
+        target_label: __tmp_service
+
+      # Reuse the "com.docker.stack.namespace" label for the "deployment" name.
+      - source_labels: [container_label_com_docker_stack_namespace]
+        action: replace
+        target_label: deployment
+      # Reuse the "name" label for the "pod" name.
+      - source_labels: [container_label_com_docker_swarm_service_name]
+        target_label: pod
+      # Generate "container" label from the task slot and ID.
+      - source_labels: [name]
+        target_label: container
+
+      # Use the "com.docker.swarm.service.name" service label as Prometheus "_tmp_service" label.
+      - source_labels: ['container_label_com_docker_stack_namespace', '__tmp_service']
+        separator: '/'
+        target_label: job
+        

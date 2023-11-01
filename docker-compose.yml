@@ -49,6 +49,8 @@ configs:
     file: configs/scrape_configs/docker.yml
   scrape-configs-dockerswarm:
     file: configs/scrape_configs/dockerswarm.yml
+  scrape-configs-cadvisor:
+    file: configs/scrape_configs/cadvisor.yml
 
   # Rules
   alerting-rules-node:
@@ -86,6 +88,8 @@ services:
         target: /etc/prometheus/scrape_configs/docker.yml
       - source: scrape-configs-dockerswarm
         target: /etc/prometheus/scrape_configs/dockerswarm.yml
+      - source: scrape-configs-cadvisor
+        target: /etc/prometheus/scrape_configs/cadvisor.yml
 
       # Rules
       - source: alerting-rules-node
