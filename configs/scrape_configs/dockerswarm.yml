@@ -65,7 +65,7 @@ scrape_configs:
         action: replace
         target_label: namespace
       # Reuse the "name" label for the "pod" name.
-      - source_labels: [__meta_dockerswarm_service_name]
+      - source_labels: [__meta_dockerswarm_service_label_com_docker_stack_namespace]
         separator: '.'
         target_label: deployment
       # Reuse the "name" label for the "pod" name.
