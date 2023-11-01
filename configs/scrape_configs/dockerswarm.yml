@@ -67,6 +67,10 @@ scrape_configs:
       # Reuse the "name" label for the "pod" name.
       - source_labels: [__meta_dockerswarm_service_name]
         separator: '.'
+        target_label: deployment
+      # Reuse the "name" label for the "pod" name.
+      - source_labels: [__meta_dockerswarm_service_name]
+        separator: '.'
         target_label: pod
       # Generate "container" label from the task slot and ID.
       - source_labels: [__meta_dockerswarm_service_name, __meta_dockerswarm_task_slot, __meta_dockerswarm_task_id]
