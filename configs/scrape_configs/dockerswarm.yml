@@ -10,6 +10,11 @@ scrape_configs:
         target_label: instance
 
       # Filtering rules for containers.
+      # Drop any "cadvisor" containers as we are using the "cadvisor" job for that.
+      - source_labels: [__meta_dockerswarm_service_name]
+        regex: (.+_cadvisor)
+        action: drop
+
       # Only keep containers that should be running.
       - source_labels: [__meta_dockerswarm_task_desired_state]
         regex: running
