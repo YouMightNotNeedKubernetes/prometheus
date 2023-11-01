@@ -50,9 +50,11 @@ scrape_configs:
         replacement: "${1}"
         target_label: __tmp_service
 
-      # Use the "default" as Kubernetes "namespace" label.
-      - target_label: namespace
-        replacement: default
+      # Use the "com.docker.stack.namespace" service label as Kubernetes "namespace" label.
+      - source_labels: [__meta_dockerswarm_service_label_com_docker_stack_namespace]
+        action: replace
+        target_label: namespace
+
       # Reuse the "com.docker.stack.namespace" label for the "deployment" name.
       - source_labels: [__meta_dockerswarm_service_label_com_docker_stack_namespace]
         action: replace
@@ -89,9 +91,10 @@ scrape_configs:
       # !!! IMPORTANT !!!
       # Kubernetes compatible relabeling.
       # Use with caution as these will override any labels set by the relabeling rules above.
-      # Use the "default" as Kubernetes "namespace" label.
-      - target_label: namespace
-        replacement: default
+      # Use the "com.docker.stack.namespace" service label as Kubernetes "namespace" label.
+      - source_labels: [container_label_com_docker_stack_namespace]
+        action: replace
+        target_label: namespace
 
       # Extract service name
       - source_labels: [container_label_com_docker_swarm_service_name]
