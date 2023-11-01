@@ -46,25 +46,37 @@ scrape_configs:
         regex: (https?)
 
       # Relabeling rules for containers.
-      # Use the "com.docker.stack.namespace" service label as Prometheus "namespace" label.
-      - source_labels: [__meta_dockerswarm_service_label_com_docker_stack_namespace]
-        action: replace
-        target_label: namespace
-      # Use the "com.docker.swarm.service.name" service label as Prometheus "service" label.
-      - source_labels: [__meta_dockerswarm_service_name]
-        action: replace
-        regex: "^.+_(.+)$"
-        replacement: "${1}"
-        target_label: service
-      # Use the "io.prometheus.job_name" Swarm label as Prometheus job label.
-      - source_labels: ['__meta_dockerswarm_service_label_com_docker_stack_namespace', 'service']
-        separator: '/'
-        target_label: job
-
       # Label map to add Swarm stack labels as Prometheus labels.
       - action: labelmap
         regex: "__meta_dockerswarm_service_label_com_docker_stack_(.*)"
         replacement: "docker_stack_${1}"
+
+      # !!! IMPORTANT !!!
+      # Kubernetes compatible relabeling.
+      # Use with caution as these will override any labels set by the relabeling rules above.
+      - source_labels: [__meta_dockerswarm_service_name]
+        action: replace
+        regex: "^.+_(.+)$"
+        replacement: "${1}"
+        target_label: __tmp_service
+
+      # Use the "com.docker.stack.namespace" service label as Kubernetes "namespace" label.
+      - source_labels: [__meta_dockerswarm_service_label_com_docker_stack_namespace]
+        action: replace
+        target_label: namespace
+      # Reuse the "name" label for the "pod" name.
+      - source_labels: [__meta_dockerswarm_service_name]
+        separator: '.'
+        target_label: pod
+      # Generate "container" label from the task slot and ID.
+      - source_labels: [__meta_dockerswarm_service_name, __meta_dockerswarm_task_slot, __meta_dockerswarm_task_id]
+        separator: '.'
+        target_label: container
+
+      # Use the "com.docker.swarm.service.name" service label as Prometheus "_tmp_service" label.
+      - source_labels: ['__meta_dockerswarm_service_label_com_docker_stack_namespace', '__tmp_service']
+        separator: '/'
+        target_label: job
 
       # !!! IMPORTANT !!!
       # Extratanous labels for overriding the prometheus scrape configs
