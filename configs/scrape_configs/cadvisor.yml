@@ -43,3 +43,6 @@ scrape_configs:
         separator: '/'
         target_label: job
         
+      # Remove __tmp_service label
+      - action: labeldrop
+        regex: __tmp_service
