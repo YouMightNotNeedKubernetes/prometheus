@@ -31,6 +31,9 @@ networks:
   dockerswarm_monitoring:
     name: dockerswarm_monitoring
     external: true
+  prometheus:
+    driver: overlay
+    attachable: true
 
 volumes:
   prometheus:
@@ -68,6 +71,7 @@ services:
       - "--storage.tsdb.retention.time=30d"
     networks:
       - dockerswarm_monitoring
+      - prometheus
     ports:
       - ${PROMETHEUS_PORT:-9090}:9090
     volumes:
