@@ -1,4 +1,10 @@
-# Kubernetes Compatible Labels
+# Docs
+A detailed documents explaining the design of this stack and configurations.
+
+> [!WARNING]
+> This documents is still a work-in-progress
+
+## Kubernetes Compatible Labels
 
 This diagram show what the labels used for adding **Kubernetes Compatible Labels**.
 
