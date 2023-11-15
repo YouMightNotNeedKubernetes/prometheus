@@ -11,7 +11,7 @@ global:
 
 # Write samples to Grafana Mimir
 remote_write:
-  - url: http://mimir:3200/api/v1/push
+  - url: http://mimir:3100/api/v1/push
     headers:
       "X-Scope-OrgID": demo
 
