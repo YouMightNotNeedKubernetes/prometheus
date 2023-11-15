@@ -62,7 +62,7 @@ services:
       - dockerswarm_monitoring
     deploy:
       labels:
-        io.prometheus.enable: "true"
+        io.prometheus.enabled: "true"
         io.prometheus.scrape_port: "8080" # optional
         io.prometheus.scrape_scheme: "http" # optional
         io.prometheus.metrics_path: "/metrics" # optional
