@@ -44,8 +44,8 @@ configs:
   # Scrape configs
   scrape-configs-docker:
     file: configs/scrape_configs/docker.yml
-  scrape-configs-dockerswarm:
-    file: configs/scrape_configs/dockerswarm.yml
+  scrape-configs-docker-swarm:
+    file: configs/scrape_configs/docker-swarm.yml
   scrape-configs-cadvisor:
     file: configs/scrape_configs/cadvisor.yml
 
@@ -82,8 +82,8 @@ services:
       # Scrape configs
       - source: scrape-configs-docker
         target: /etc/prometheus/scrape_configs/docker.yml
-      - source: scrape-configs-dockerswarm
-        target: /etc/prometheus/scrape_configs/dockerswarm.yml
+      - source: scrape-configs-docker-swarm
+        target: /etc/prometheus/scrape_configs/docker-swarm.yml
       - source: scrape-configs-cadvisor
         target: /etc/prometheus/scrape_configs/cadvisor.yml
 
