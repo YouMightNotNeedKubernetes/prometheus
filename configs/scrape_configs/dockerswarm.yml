@@ -25,7 +25,7 @@ scrape_configs:
         action: keep
       # Only keep containers that have `prometheus` or `dockerswarm_monitoring` network attatched.
       - source_labels: [__meta_dockerswarm_network_name]
-        regex: (prometheus|dockerswarm_monitoring)
+        regex: (ingress|prometheus|dockerswarm_monitoring)
         action: keep
 
       # Overriding scrape config for containers.
