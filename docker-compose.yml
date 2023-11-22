@@ -42,19 +42,19 @@ configs:
     file: configs/prometheus.yml
 
   # Scrape configs
-  scrape-configs-dockerswarm_nodes:
+  scrape_configs_dockerswarm_nodes:
     file: configs/scrape_configs/dockerswarm_nodes.yml
-  scrape-configs-dockerswarm_tasks:
+  scrape_configs_dockerswarm_tasks:
     file: configs/scrape_configs/dockerswarm_tasks.yml
-  scrape-configs-dockerswarm_cadvisor:
+  scrape_configs_dockerswarm_cadvisor:
     file: configs/scrape_configs/dockerswarm_cadvisor.yml
 
   # Rules
-  alerting-rules-node:
+  alerting_rules_node:
     file: configs/rules/node.yml
-  alerting-rules-service:
+  alerting_rules_service:
     file: configs/rules/service.yml
-  alerting-rules-task:
+  alerting_rules_task:
     file: configs/rules/task.yml
 
 services:
@@ -80,19 +80,19 @@ services:
         target: /etc/prometheus/prometheus.yml
 
       # Scrape configs
-      - source: scrape-configs-dockerswarm_nodes
+      - source: scrape_configs_dockerswarm_nodes
         target: /etc/prometheus/scrape_configs/dockerswarm_nodes.yml
-      - source: scrape-configs-dockerswarm_tasks
+      - source: scrape_configs_dockerswarm_tasks
         target: /etc/prometheus/scrape_configs/dockerswarm_tasks.yml
-      - source: scrape-configs-dockerswarm_cadvisor
+      - source: scrape_configs_dockerswarm_cadvisor
         target: /etc/prometheus/scrape_configs/dockerswarm_cadvisor.yml
 
       # Rules
-      - source: alerting-rules-node
+      - source: alerting_rules_node
         target: /etc/prometheus/rules/node.yml
-      - source: alerting-rules-service
+      - source: alerting_rules_service
         target: /etc/prometheus/rules/service.yml
-      - source: alerting-rules-task
+      - source: alerting_rules_task
         target: /etc/prometheus/rules/task.yml
     deploy: *x-deploy-policy
     logging: *x-default-logging
