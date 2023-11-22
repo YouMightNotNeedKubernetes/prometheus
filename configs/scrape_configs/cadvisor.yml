@@ -141,7 +141,8 @@ scrape_configs:
         - name
         target_label: container
 
-      - source_labels: [container_label_com_docker_swarm_service_name]
+      - source_labels:
+        - container_label_com_docker_swarm_service_name
         action: replace
         regex: "^.+_(.+)$"
         replacement: "${1}"
