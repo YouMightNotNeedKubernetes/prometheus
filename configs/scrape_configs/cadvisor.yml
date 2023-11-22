@@ -86,8 +86,15 @@ scrape_configs:
         separator: '.'
         target_label: container
 
+      - source_labels: [__meta_dockerswarm_service_name]
+        action: replace
+        regex: "^.+_(.+)$"
+        replacement: "${1}"
+        target_label: __tmp_service
       # Use the "com.docker.swarm.service.name" service label as Prometheus "_tmp_service" label.
-      - source_labels: ['__meta_dockerswarm_service_label_com_docker_stack_namespace', 'container']
+      - source_labels:
+        - __meta_dockerswarm_service_label_com_docker_stack_namespace
+        - __tmp_service
         separator: '/'
         target_label: job
 
@@ -134,9 +141,17 @@ scrape_configs:
         - name
         target_label: container
 
+      - source_labels: [container_label_com_docker_swarm_service_name]
+        action: replace
+        regex: "^.+_(.+)$"
+        replacement: "${1}"
+        target_label: __tmp_service
       # Use the "com.docker.swarm.service.name" service label as Prometheus "_tmp_service" label.
       - source_labels: 
         - container_label_com_docker_stack_namespace
-        - container
+        - __tmp_service
         separator: '/'
         target_label: job
+      # Remove __tmp_service label
+      - action: labeldrop
+        regex: __tmp_service

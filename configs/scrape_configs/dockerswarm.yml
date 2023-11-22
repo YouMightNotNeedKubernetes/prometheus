@@ -99,11 +99,19 @@ scrape_configs:
         - __meta_dockerswarm_task_id
         separator: '.'
         target_label: container
+
+      - source_labels: [__meta_dockerswarm_service_name]
+        action: replace
+        regex: "^.+_(.+)$"
+        replacement: "${1}"
+        target_label: __tmp_service
       # Reuse the "com.docker.stack.namespace" and "container" labels for the "job" name.
       - action: replace
         replacement: $1
         separator: /
-        source_labels: [__meta_dockerswarm_service_label_com_docker_stack_namespace, container]
+        source_labels:
+        - __meta_dockerswarm_service_label_com_docker_stack_namespace
+        - __tmp_service
         target_label: job
 
       # !!! IMPORTANT !!!
