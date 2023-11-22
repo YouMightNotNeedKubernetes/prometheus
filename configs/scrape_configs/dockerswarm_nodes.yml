@@ -1,6 +1,6 @@
 scrape_configs:
   # Create a job for Docker daemons.
-  - job_name: 'dockerswarm-nodes'
+  - job_name: 'dockerswarm_nodes'
     dockerswarm_sd_configs:
       - host: unix:///var/run/docker.sock
         role: nodes
