@@ -42,12 +42,12 @@ configs:
     file: configs/prometheus.yml
 
   # Scrape configs
-  scrape-configs-docker:
-    file: configs/scrape_configs/docker.yml
-  scrape-configs-dockerswarm:
-    file: configs/scrape_configs/dockerswarm.yml
-  scrape-configs-cadvisor:
-    file: configs/scrape_configs/cadvisor.yml
+  scrape-configs-dockerswarm-nodes:
+    file: configs/scrape_configs/dockerswarm-nodes.yml
+  scrape-configs-dockerswarm-tasks:
+    file: configs/scrape_configs/dockerswarm-tasks.yml
+  scrape-configs-dockerswarm-cadvisor:
+    file: configs/scrape_configs/dockerswarm-cadvisor.yml
 
   # Rules
   alerting-rules-node:
@@ -80,12 +80,12 @@ services:
         target: /etc/prometheus/prometheus.yml
 
       # Scrape configs
-      - source: scrape-configs-docker
-        target: /etc/prometheus/scrape_configs/docker.yml
-      - source: scrape-configs-dockerswarm
-        target: /etc/prometheus/scrape_configs/dockerswarm.yml
-      - source: scrape-configs-cadvisor
-        target: /etc/prometheus/scrape_configs/cadvisor.yml
+      - source: scrape-configs-dockerswarm-nodes
+        target: /etc/prometheus/scrape_configs/dockerswarm-nodes.yml
+      - source: scrape-configs-dockerswarm-tasks
+        target: /etc/prometheus/scrape_configs/dockerswarm-tasks.yml
+      - source: scrape-configs-dockerswarm-cadvisor
+        target: /etc/prometheus/scrape_configs/dockerswarm-cadvisor.yml
 
       # Rules
       - source: alerting-rules-node
