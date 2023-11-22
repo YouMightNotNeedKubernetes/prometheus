@@ -7,6 +7,9 @@ x-deploy-policy: &x-deploy-policy
       - node.labels.prometheus == true
     preferences:
       - spread: node.labels.prometheus
+  labels:
+    # Promtail
+    io.promtail.enabled: "true"
   update_config:
     parallelism: 1
     delay: 30s
