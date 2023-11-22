@@ -37,7 +37,7 @@ volumes:
     external: true
 
 configs:
-  prometheus-config:
+  prometheus_config:
     template_driver: golang
     file: configs/prometheus.yml
 
@@ -76,7 +76,7 @@ services:
       - prometheus:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock:ro
     configs:
-      - source: prometheus-config
+      - source: prometheus_config
         target: /etc/prometheus/prometheus.yml
 
       # Scrape configs
